@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mood DJ</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background:#111827; color:#e5e7eb; }
+        .container { max-width: 700px; margin:40px auto; padding:20px; background:#1f2937; border-radius:16px; }
+        textarea { width:100%; padding:10px; border-radius:8px; border:1px solid #4b5563; background:#111827; color:#f9fafb; }
+        button { margin-top:10px; padding:8px 16px; border-radius:999px; border:none; background:#10b981; color:#022c22; font-weight:600; cursor:pointer; }
+        .error { margin-top:10px; padding:8px; background:#b91c1c; border-radius:8px; }
+        .analysis { margin-top:20px; padding:12px; background:#111827; border-radius:12px; }
+        .tag { display:inline-block; margin:2px; padding:2px 8px; border-radius:999px; background:#374151; font-size:12px; }
+        a.spotify { display:inline-block; margin-top:10px; padding:6px 12px; border-radius:999px; background:#1db954; color:#022c22; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Mood DJ 🎧</h1>
+    <p>Rant about your day and get music that fits your mood.</p>
+
+    <form method="POST">
+        <label for="essay">How was your day?</label><br>
+        <textarea id="essay" name="essay" rows="8"
+                  placeholder="Type anything here...">{{ essay or '' }}</textarea>
+        <br>
+        <button type="submit">Analyse my mood</button>
+    </form>
+
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if analysis %}
+      <div class="analysis">
+          <p><strong>Mood:</strong> {{ analysis.mood_label.replace('_', ' ') }}</p>
+          <p><strong>Energy:</strong> {{ analysis.energy_level }}</p>
+
+          <p><strong>Topic words:</strong>
+              {% for w in analysis.topic_words %}
+                  <span class="tag">{{ w }}</span>
+              {% endfor %}
+          </p>
+
+          <p><strong>Keywords used:</strong>
+              {% for w in analysis.search_keywords[:8] %}
+                  <span class="tag">{{ w }}</span>
+              {% endfor %}
+          </p>
+
+          <p><strong>Spotify search:</strong> {{ query }}</p>
+
+          <a class="spotify" href="{{ spotify_url }}" target="_blank">
+              Open matching songs on Spotify
+          </a>
+      </div>
+    {% endif %}
+</div>
+</body>
+</html> 
