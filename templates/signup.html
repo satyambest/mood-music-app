@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up - Mood DJ</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background:#111827; color:#e5e7eb; }
+        .container { max-width: 400px; margin:40px auto; padding:20px; background:#1f2937; border-radius:16px; }
+        input { 
+            width:100%; 
+            padding:10px; 
+            margin:10px 0; 
+            border-radius:8px; 
+            border:1px solid #4b5563; 
+            background:#111827; 
+            color:#f9fafb;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        input:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+            transform: translateY(-1px);
+        }
+        button { 
+            width:100%; 
+            margin-top:10px; 
+            padding:10px; 
+            border-radius:999px; 
+            border:none; 
+            background:#10b981; 
+            color:#022c22; 
+            font-weight:600; 
+            cursor:pointer;
+            transition: all 0.2s ease;
+            outline: 2px solid transparent;
+        }
+        button:hover {
+            outline: 2px solid #34d399;
+            outline-offset: 2px;
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        .error { margin-top:10px; padding:8px; background:#b91c1c; border-radius:8px; }
+        a { 
+            color:#10b981; 
+            text-decoration:none;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        a:hover {
+            color: #34d399;
+            transform: translateX(3px);
+        }
+        a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: currentColor;
+            transition: width 0.2s ease;
+        }
+        a:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Sign Up for Mood DJ 🎧</h1>
+
+    <form method="POST">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Sign Up</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="error">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+</div>
+</body>
+</html>

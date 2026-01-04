@@ -6,16 +6,97 @@
     <style>
         body { font-family: system-ui, sans-serif; background:#111827; color:#e5e7eb; }
         .container { max-width: 700px; margin:40px auto; padding:20px; background:#1f2937; border-radius:16px; }
-        textarea { width:100%; padding:10px; border-radius:8px; border:1px solid #4b5563; background:#111827; color:#f9fafb; }
-        button { margin-top:10px; padding:8px 16px; border-radius:999px; border:none; background:#10b981; color:#022c22; font-weight:600; cursor:pointer; }
+        textarea { 
+            width:100%; 
+            padding:10px; 
+            border-radius:8px; 
+            border:1px solid #4b5563; 
+            background:#111827; 
+            color:#f9fafb;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        textarea:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+            transform: translateY(-1px);
+        }
+        button { 
+            margin-top:10px; 
+            padding:8px 16px; 
+            border-radius:999px; 
+            border:none; 
+            background:#10b981; 
+            color:#022c22; 
+            font-weight:600; 
+            cursor:pointer;
+            transition: all 0.2s ease;
+            outline: 2px solid transparent;
+        }
+        button:hover {
+            outline: 2px solid #34d399;
+            outline-offset: 2px;
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        .header-link {
+            transition: all 0.2s ease;
+            text-decoration: none;
+            position: relative;
+        }
+        .header-link:hover {
+            transform: translateY(-2px);
+        }
+        .header-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: currentColor;
+            transition: width 0.2s ease;
+        }
+        .header-link:hover::after {
+            width: 100%;
+        }
         .error { margin-top:10px; padding:8px; background:#b91c1c; border-radius:8px; }
         .analysis { margin-top:20px; padding:12px; background:#111827; border-radius:12px; }
         .tag { display:inline-block; margin:2px; padding:2px 8px; border-radius:999px; background:#374151; font-size:12px; }
-        a.spotify { display:inline-block; margin-top:10px; padding:6px 12px; border-radius:999px; background:#1db954; color:#022c22; text-decoration:none; font-weight:600; }
+        a {
+            transition: all 0.2s ease;
+        }
+        a.spotify { 
+            display:inline-block; 
+            margin-top:10px; 
+            padding:6px 12px; 
+            border-radius:999px; 
+            background:#1db954; 
+            color:#022c22; 
+            text-decoration:none; 
+            font-weight:600;
+            transition: all 0.2s ease;
+        }
+        a.spotify:hover {
+            background: #1ed760;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(29, 185, 84, 0.3);
+        }
+        a.spotify:active {
+            transform: translateY(0) scale(0.98);
+        }
     </style>
 </head>
 <body>
 <div class="container">
+    <div style="text-align: right; margin-bottom: 20px;">
+        <span>Welcome, {{ current_user.username }}!</span>
+        {% if current_user.is_admin %}
+        <a href="{{ url_for('admin') }}" class="header-link" style="margin-left: 10px; color: #f59e0b;">Admin Panel</a>
+        {% endif %}
+        <a href="{{ url_for('logout') }}" class="header-link" style="margin-left: 10px; color: #10b981;">Logout</a>
+    </div>
     <h1>Mood DJ 🎧</h1>
     <p>Rant about your day and get music that fits your mood.</p>
 
