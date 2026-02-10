@@ -1,53 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Mood DJ</title>
     <style>
-        body { font-family: system-ui, sans-serif; background:#111827; color:#e5e7eb; }
-        .container { max-width: 700px; margin:40px auto; padding:20px; background:#1f2937; border-radius:16px; }
-        textarea { 
-            width:100%; 
-            padding:10px; 
-            border-radius:8px; 
-            border:1px solid #4b5563; 
-            background:#111827; 
-            color:#f9fafb;
+        body {
+            font-family: system-ui, sans-serif;
+            background: #111827;
+            color: #e5e7eb;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            min-height: 100vh;
+            padding: 20px;
+            background: #1f2937;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+                max-width: none;
+                width: 100%;
+            }
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #4b5563;
+            background: #111827;
+            color: #f9fafb;
             transition: all 0.2s ease;
             outline: none;
         }
+
         textarea:focus {
             border-color: #10b981;
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
             transform: translateY(-1px);
         }
-        button { 
-            margin-top:10px; 
-            padding:8px 16px; 
-            border-radius:999px; 
-            border:none; 
-            background:#10b981; 
-            color:#022c22; 
-            font-weight:600; 
-            cursor:pointer;
+
+        button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: none;
+            background: #10b981;
+            color: #022c22;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.2s ease;
             outline: 2px solid transparent;
         }
+
         button:hover {
             outline: 2px solid #34d399;
             outline-offset: 2px;
         }
+
         button:active {
             transform: scale(0.95);
         }
+
         .header-link {
             transition: all 0.2s ease;
             text-decoration: none;
             position: relative;
         }
+
         .header-link:hover {
             transform: translateY(-2px);
         }
+
         .header-link::after {
             content: '';
             position: absolute;
@@ -58,27 +90,88 @@
             background: currentColor;
             transition: width 0.2s ease;
         }
+
         .header-link:hover::after {
             width: 100%;
         }
-        .error { margin-top:10px; padding:8px; background:#b91c1c; border-radius:8px; }
-        .analysis { margin-top:20px; padding:12px; background:#111827; border-radius:12px; }
-        .tag { display:inline-block; margin:2px; padding:2px 8px; border-radius:999px; background:#374151; font-size:12px; }
-        a {
-            transition: all 0.2s ease;
+
+        .error {
+            margin-top: 10px;
+            padding: 8px;
+            background: #b91c1c;
+            border-radius: 8px;
         }
-        a.spotify { 
-            display:inline-block; 
-            margin-top:10px; 
-            padding:6px 12px; 
-            border-radius:999px; 
-            background:#1db954; 
-            color:#022c22; 
-            text-decoration:none; 
-            font-weight:600;
+
+        .input-section, .analysis-section {
+            padding: 20px;
+            background: #1f2937;
+            border-radius: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .input-section, .analysis-section {
+                border-radius: 0;
+                padding: 40px;
+            }
+        }
+
+        .table {
+            display: none; /* Hidden by default */
+        }
+
+        .table.expanded {
+            display: block;
+        }
+
+        .toggle-btn {
+            margin-top: 15px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: none;
+            background: #374151;
+            color: #e5e7eb;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.2s ease;
             outline: 2px solid transparent;
         }
+
+        .toggle-btn:hover {
+            background: #4b5563;
+            outline: 2px solid #6b7280;
+            outline-offset: 2px;
+        }
+
+        .toggle-btn:active {
+            transform: scale(0.95);
+        }
+
+        .tag {
+            display: inline-block;
+            margin: 2px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: #374151;
+            font-size: 12px;
+        }
+
+        a {
+            transition: all 0.2s ease;
+        }
+
+        a.spotify {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: #1db954;
+            color: #022c22;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            outline: 2px solid transparent;
+        }
+
         a.spotify:hover {
             background: #1ed760;
             transform: translateY(-1px);
@@ -86,59 +179,408 @@
             outline: 2px solid #1ed760;
             outline-offset: 2px;
         }
+
         a.spotify:active {
             transform: translateY(0) scale(0.95);
         }
+
+        .spotify-connect {
+            background: #1db954;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .spotify-connect-btn {
+            display: inline-block;
+            background: white;
+            color: #1db954;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .spotify-connect-btn:hover {
+            background: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .spotify-results {
+            margin-top: 20px;
+            padding: 15px;
+            background: #111827;
+            border-radius: 12px;
+        }
+
+        .spotify-results h3 {
+            margin-top: 0;
+            color: #10b981;
+        }
+
+        .tracks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .track-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #1f2937;
+            border-radius: 8px;
+            gap: 10px;
+        }
+
+        .track-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .track-info {
+            flex: 1;
+        }
+
+        .track-name {
+            font-weight: bold;
+            color: #e5e7eb;
+        }
+
+        .track-artist {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        .add-to-playlist-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .add-to-playlist-btn:hover {
+            background: #059669;
+        }
+
+        .play-btn {
+            color: #1db954;
+            text-decoration: none;
+            font-size: 16px;
+            margin-left: 5px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #1f2937;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            color: #e5e7eb;
+        }
+
+        .modal h3 {
+            margin-top: 0;
+            color: #10b981;
+        }
+
+        .playlist-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #111827;
+            margin: 5px 0;
+            border-radius: 6px;
+        }
+
+        .playlist-name {
+            font-weight: bold;
+        }
+
+        .playlist-tracks {
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: white;
+        }
     </style>
 </head>
+
 <body>
-<div class="container">
-    <div style="text-align: right; margin-bottom: 20px;">
-        <span>Welcome, {{ current_user.username }}!</span>
-        {% if current_user.is_admin %}
-        <a href="{{ url_for('admin') }}" class="header-link" style="margin-left: 10px; color: #f59e0b;">Admin Panel</a>
-        {% endif %}
-        <a href="{{ url_for('logout') }}" class="header-link" style="margin-left: 10px; color: #10b981;">Logout</a>
+    <div class="container">
+        <div class="input-section">
+            <div style="text-align: right; margin-bottom: 20px;">
+                <span>Welcome, {{ current_user.username }}!</span>
+                {% if current_user.is_admin %}
+                <a href="{{ url_for('admin') }}" class="header-link" style="margin-left: 10px; color: #f59e0b;">Admin
+                    Panel</a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}" class="header-link" style="margin-left: 10px; color: #10b981;">Logout</a>
+            </div>
+            <h1>Mood DJ 🎧</h1>
+            <p>Rant about your day and get music that fits your mood.</p>
+
+            <form method="POST">
+                <label for="essay">How was your day?</label><br>
+                <textarea id="essay" name="essay" rows="16" placeholder="Type anything here...">{{ essay or '' }}</textarea>
+                <br>
+                <button type="submit">Analyse my mood</button>
+            </form>
+
+            {% if error %}
+            <div class="error">{{ error }}</div>
+            {% endif %}
+        </div>
+
+        <div class="analysis-section">
+            {% if not spotify_connected %}
+            <div class="spotify-connect">
+                <p>Connect your Spotify account to search and save music directly!</p>
+                <a href="{{ url_for('spotify_login') }}" class="spotify-connect-btn">
+                    Connect Spotify
+                </a>
+            </div>
+            {% endif %}
+
+            {% if analysis %}
+            <div class="analysis" id="analysisDiv">
+                <button class="toggle-btn" id="toggleTable" onclick="toggleTable()">
+                    Show Detailed Analysis ▼
+                </button>
+                <div class="table" id="tableDiv">
+                     <p><strong>Mood:</strong> {{ analysis.mood_label.replace('_', ' ') }}</p>
+                <p><strong>Energy:</strong> {{ analysis.energy_level }}</p>
+                <p><strong>Confidence:</strong> {{ analysis.confidence }}</p>
+                <p><strong>Emotions:</strong>
+                    {% for e in analysis.emotions %}
+                    <span class="tag">{{ e }}</span>
+                    {% endfor %}
+                </p>
+                <p><strong>Example songs:</strong>
+                    {% for s in analysis.example_songs %}
+                    <span class="tag">{{ s }}</span>
+                    {% endfor %}
+                </p>
+                <p><strong>Spotify search keywords:</strong>
+                    {% for w in analysis.spotify_search_keywords[:8] %}
+                    <span class="tag">{{ w }}</span>
+                    {% endfor %}
+                </p>
+                <p><strong>Topic words:</strong>
+                    {% for w in analysis.topic_words %}
+                    <span class="tag">{{ w }}</span>
+                    {% endfor %}
+                </p>
+
+                <p><strong>Keywords used:</strong>
+                    {% for w in analysis.spotify_search_keywords[:8] %}
+                    <span class="tag">{{ w }}</span>
+                    {% endfor %}
+                </p>
+
+                </div>
+               
+                <p><strong>Spotify search:</strong> {{ query }}</p>
+
+                <a class="spotify" href="{{ spotify_url }}" target="_blank">
+                    Open in Spotify Web
+                </a>
+
+                {% if spotify_tracks %}
+                <div class="spotify-results">
+                    <h3>🎵 Recommended Tracks</h3>
+                    <div class="tracks-list">
+                        {% for track in spotify_tracks %}
+                        <div class="track-item" data-track-uri="{{ track.uri }}">
+                            <img src="{{ track.image }}" alt="{{ track.album }}" class="track-image">
+                            <div class="track-info">
+                                <div class="track-name">{{ track.name }}</div>
+                                <div class="track-artist">{{ track.artist }}</div>
+                            </div>
+                            <button class="add-to-playlist-btn" onclick="showPlaylistModal('{{ track.uri }}', '{{ track.name }}', '{{ track.artist }}')">
+                                ➕ Add
+                            </button>
+                            <a href="{{ track.external_url }}" target="_blank" class="play-btn">▶️</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
     </div>
-    <h1>Mood DJ 🎧</h1>
-    <p>Rant about your day and get music that fits your mood.</p>
 
-    <form method="POST">
-        <label for="essay">How was your day?</label><br>
-        <textarea id="essay" name="essay" rows="8"
-                  placeholder="Type anything here...">{{ essay or '' }}</textarea>
-        <br>
-        <button type="submit">Analyse my mood</button>
-    </form>
+    <!-- Playlist Modal -->
+    <div id="playlistModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3>Add to Playlist</h3>
+            <p id="modalTrackInfo"></p>
+            
+            <div id="playlistsContainer">
+                <p>Loading playlists...</p>
+            </div>
+            
+            <button onclick="createNewPlaylist()" style="margin-top: 15px; background: #374151; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
+                Create New Playlist
+            </button>
+        </div>
+    </div>
 
-    {% if error %}
-      <div class="error">{{ error }}</div>
-    {% endif %}
+    <script>
+        let currentTrackUri = '';
 
-    {% if analysis %}
-      <div class="analysis">
-          <p><strong>Mood:</strong> {{ analysis.mood_label.replace('_', ' ') }}</p>
-          <p><strong>Energy:</strong> {{ analysis.energy_level }}</p>
+        function toggleTable() {
+            const tableDiv = document.getElementById('tableDiv');
+            const toggleBtn = document.getElementById('toggleTable');
+            
+            if (tableDiv.classList.contains('expanded')) {
+                tableDiv.classList.remove('expanded');
+                toggleBtn.textContent = 'Show Detailed Analysis ▼';
+            } else {
+                tableDiv.classList.add('expanded');
+                toggleBtn.textContent = 'Hide Detailed Analysis ▲';
+            }
+        }
 
-          <p><strong>Topic words:</strong>
-              {% for w in analysis.topic_words %}
-                  <span class="tag">{{ w }}</span>
-              {% endfor %}
-          </p>
+        function showPlaylistModal(trackUri, trackName, artistName) {
+            currentTrackUri = trackUri;
+            document.getElementById('modalTrackInfo').textContent = `${trackName} by ${artistName}`;
+            document.getElementById('playlistModal').style.display = 'block';
+            loadPlaylists();
+        }
 
-          <p><strong>Keywords used:</strong>
-              {% for w in analysis.search_keywords[:8] %}
-                  <span class="tag">{{ w }}</span>
-              {% endfor %}
-          </p>
+        function closeModal() {
+            document.getElementById('playlistModal').style.display = 'none';
+            currentTrackUri = '';
+        }
 
-          <p><strong>Spotify search:</strong> {{ query }}</p>
+        function loadPlaylists() {
+            fetch('/spotify/playlists')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('playlistsContainer').innerHTML = '<p>Error loading playlists</p>';
+                        return;
+                    }
+                    
+                    let html = '';
+                    data.playlists.forEach(playlist => {
+                        html += `
+                            <div class="playlist-item">
+                                <div>
+                                    <div class="playlist-name">${playlist.name}</div>
+                                    <div class="playlist-tracks">${playlist.tracks} tracks</div>
+                                </div>
+                                <button onclick="addToPlaylist('${playlist.id}')" class="add-to-playlist-btn">Add</button>
+                            </div>
+                        `;
+                    });
+                    
+                    if (data.playlists.length === 0) {
+                        html = '<p>No playlists found. Create a new one!</p>';
+                    }
+                    
+                    document.getElementById('playlistsContainer').innerHTML = html;
+                })
+                .catch(error => {
+                    document.getElementById('playlistsContainer').innerHTML = '<p>Error loading playlists</p>';
+                    console.error('Error:', error);
+                });
+        }
 
-          <a class="spotify" href="{{ spotify_url }}" target="_blank">
-              Open matching songs on Spotify
-          </a>
-      </div>
-    {% endif %}
-</div>
+        function addToPlaylist(playlistId) {
+            const formData = new FormData();
+            formData.append('playlist_id', playlistId);
+            formData.append('track_uri', currentTrackUri);
+
+            fetch('/spotify/add_to_playlist', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Track added to playlist successfully!');
+                    closeModal();
+                } else {
+                    alert('Error adding track: ' + data.error);
+                }
+            })
+            .catch(error => {
+                alert('Error adding track to playlist');
+                console.error('Error:', error);
+            });
+        }
+
+        function createNewPlaylist() {
+            const playlistName = prompt('Enter playlist name:', 'Mood DJ - ' + new Date().toLocaleDateString());
+            if (!playlistName) return;
+
+            const formData = new FormData();
+            formData.append('name', playlistName);
+            formData.append('description', 'Created by Mood DJ');
+
+            fetch('/spotify/create_playlist', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Playlist created! Adding track...');
+                    addToPlaylist(data.playlist_id);
+                } else {
+                    alert('Error creating playlist: ' + data.error);
+                }
+            })
+            .catch(error => {
+                alert('Error creating playlist');
+                console.error('Error:', error);
+            });
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('playlistModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
 </body>
-</html> 
+
+</html>

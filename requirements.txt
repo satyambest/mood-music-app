@@ -7,3 +7,5 @@ flask-wtf
 werkzeug
 psycopg2-binary
 python-dotenv
+groq
+spotipy

@@ -10,6 +10,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(150), unique=True, nullable=False, index=True)
     password_hash = db.Column(db.String(255), nullable=False)  # Increased length for PostgreSQL
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
+    spotify_token = db.Column(db.String(255), nullable=True)
+    spotify_refresh_token = db.Column(db.String(255), nullable=True)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
