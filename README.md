@@ -1,32 +1,32 @@
-# 🎵 Mood DJ - AI-Powered Music Mood Analysis App
+# Mood DJ - AI-Powered Music Mood Analysis App
 
 A sophisticated Flask web application that uses Groq AI to analyze your mood from text and provides personalized Spotify music recommendations with direct playlist integration.
 
-## ✨ Features
+## Features
 
-### 🤖 Advanced AI Mood Analysis
+### Advanced AI Mood Analysis
 - **Groq AI Integration**: Uses Llama 3.3 70B Versatile model for nuanced mood detection
 - **Multi-dimensional Analysis**: Detects mood, energy levels, emotions, and confidence scores
 - **Smart Keywords**: AI-generated Spotify search keywords optimized for music discovery
 
-### 🎵 Spotify Integration
+### Spotify Integration
 - **OAuth Authentication**: Secure connection to Spotify accounts
 - **Real-time Search**: Direct API calls to find matching tracks
 - **Playlist Management**: Create new playlists or add to existing ones
 - **Visual Track Display**: Album art, artist info, and direct play links
 
-### 🎨 Modern UI/UX
+### Modern UI/UX
 - **Full-Screen Design**: Immersive experience with responsive two-column layout
 - **Dark Theme**: Beautiful dark interface with smooth animations
 - **Interactive Elements**: Expandable analysis details, modal dialogs
 - **Mobile Responsive**: Optimized for all device sizes
 
-### 👥 User Management
+### User Management
 - **Authentication System**: Secure login/signup with Flask-Login
 - **Admin Panel**: User management interface
 - **Database Flexibility**: PostgreSQL or SQLite support
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -98,7 +98,7 @@ python app.py
 
 Visit `http://localhost:5000` in your browser!
 
-## 🎯 How It Works
+## How It Works
 
 1. **Write Your Mood**: Share how you're feeling in the text area
 2. **AI Analysis**: Groq AI analyzes your text for mood, emotions, and energy
@@ -106,7 +106,7 @@ Visit `http://localhost:5000` in your browser!
 4. **Get Recommendations**: View personalized track suggestions with album art
 5. **Save to Spotify**: Add tracks directly to your playlists or create new ones
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -130,16 +130,16 @@ DATABASE_URL=sqlite:///data.db
 DATABASE_URL=postgresql://username:password@localhost:5432/database_name
 ```
 
-## 👤 Default Accounts
+## Default Accounts
 
 ### Admin Account
 - **Username:** `admin`
 - **Password:** `admin123`
 - **Email:** `admin@example.com`
 
-**⚠️ Important:** Change the default admin password in production!
+**Important:** Change the default admin password in production!
 
-## 🛠️ API Endpoints
+## API Endpoints
 
 ### Spotify Integration
 - `GET /spotify/login` - Initiate Spotify OAuth
@@ -149,7 +149,7 @@ DATABASE_URL=postgresql://username:password@localhost:5432/database_name
 - `POST /spotify/add_to_playlist` - Add track to playlist
 - `GET /spotify/playlists` - Get user's playlists
 
-## 🎨 UI Features
+## UI Features
 
 ### Responsive Design
 - **Desktop:** Two-column layout (input left, analysis right)
@@ -162,7 +162,7 @@ DATABASE_URL=postgresql://username:password@localhost:5432/database_name
 - **Track Cards:** Visual track display with add/play buttons
 - **Smooth Animations:** CSS transitions throughout
 
-## 🧠 AI Mood Analysis
+## AI Mood Analysis
 
 The app uses Groq's Llama 3.3 70B Versatile model to analyze text and return:
 - **Mood Label**: happy, sad, excited, calm, etc.
@@ -172,14 +172,14 @@ The app uses Groq's Llama 3.3 70B Versatile model to analyze text and return:
 - **Example Songs**: AI-suggested track examples
 - **Spotify Keywords**: Optimized search terms
 
-## 🔒 Security Features
+## Security Features
 
 - **Secure Authentication**: Flask-Login with password hashing
 - **OAuth Integration**: Secure Spotify API access
 - **Environment Variables**: Sensitive data stored securely
 - **CSRF Protection**: Built-in Flask-WTF protection
 
-## 📱 Technologies Used
+## Technologies Used
 
 ### Backend
 - **Flask** - Web framework
@@ -201,7 +201,7 @@ The app uses Groq's Llama 3.3 70B Versatile model to analyze text and return:
 - **Groq AI** - Mood analysis
 - **Spotify Web API** - Music integration
 
-## 🚀 Deployment
+## Deployment
 
 ### Production Setup
 
@@ -227,7 +227,7 @@ EXPOSE 5000
 CMD ["python", "app.py"]
 ```
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -235,11 +235,11 @@ CMD ["python", "app.py"]
 4. Add tests if applicable
 5. Submit a pull request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Groq** for providing powerful AI models
 - **Spotify** for their excellent Web API
