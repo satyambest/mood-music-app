@@ -40,10 +40,14 @@ SPOTIFY_CLIENT_ID = os.environ.get('SPOTIFY_CLIENT_ID')
 SPOTIFY_CLIENT_SECRET = os.environ.get('SPOTIFY_CLIENT_SECRET')
 
 def create_spotify_oauth():
+    # Use environment variable for base URL, fallback to localhost for development
+    base_url = os.environ.get('APP_BASE_URL', 'http://localhost:5000')
+    redirect_uri = f"{base_url}/spotify/callback"
+    
     return SpotifyOAuth(
         client_id=SPOTIFY_CLIENT_ID,
         client_secret=SPOTIFY_CLIENT_SECRET,
-        redirect_uri=url_for('spotify_callback', _external=True),
+        redirect_uri=redirect_uri,
         scope='playlist-modify-public playlist-modify-private user-read-private user-read-email'
     )
 
@@ -83,6 +87,10 @@ def index():
         if current_user.spotify_token:
             try:
                 sp = spotipy.Spotify(auth=current_user.spotify_token)
+                # Test the connection first
+                user_profile = sp.current_user()
+                print(f"Spotify connection successful for user: {user_profile['id']}")
+
                 results = sp.search(q=query, type='track', limit=5)
                 for track in results['tracks']['items']:
                     spotify_tracks.append({
@@ -96,6 +104,10 @@ def index():
                     })
             except Exception as e:
                 print(f"Spotify search error: {e}")
+                # Clear invalid token
+                current_user.spotify_token = None
+                current_user.spotify_refresh_token = None
+                db.session.commit()
 
         # simple Spotify search link
         spotify_url = "https://open.spotify.com/search/" + urllib.parse.quote(query)
@@ -209,12 +221,17 @@ def spotify_login():
 @login_required
 def spotify_callback():
     sp_oauth = create_spotify_oauth()
-    session.clear()
+    
+    # Clear only Spotify-related session data, not the entire session
+    spotify_keys = [key for key in session.keys() if key.startswith('spotify') or key == 'token_info']
+    for key in spotify_keys:
+        session.pop(key, None)
+    
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
     session["token_info"] = token_info
     
-    # Store Spotify token in user's session/database
+    # Store Spotify token in user's database record
     current_user.spotify_token = token_info['access_token']
     current_user.spotify_refresh_token = token_info.get('refresh_token')
     db.session.commit()
@@ -329,6 +346,49 @@ def get_playlists():
         return jsonify({'playlists': playlist_list})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+@app.route('/spotify-status')
+@login_required
+def spotify_status():
+    """Check Spotify connection status"""
+    if not current_user.spotify_token:
+        return jsonify({'connected': False, 'message': 'No Spotify token found'})
+
+    try:
+        sp = spotipy.Spotify(auth=current_user.spotify_token)
+        user_profile = sp.current_user()
+        return jsonify({
+            'connected': True,
+            'user_id': user_profile['id'],
+            'display_name': user_profile.get('display_name'),
+            'email': user_profile.get('email')
+        })
+    except spotipy.exceptions.SpotifyException as e:
+        if e.http_status == 403:
+            return jsonify({
+                'connected': False,
+                'error': '403 Forbidden',
+                'message': 'Check your Spotify app settings on developer.spotify.com/dashboard'
+            })
+        elif e.http_status == 401:
+            return jsonify({
+                'connected': False,
+                'error': '401 Unauthorized',
+                'message': 'Token expired or invalid'
+            })
+        else:
+            return jsonify({
+                'connected': False,
+                'error': f'Spotify API Error {e.http_status}',
+                'message': str(e)
+            })
+    except Exception as e:
+        return jsonify({
+            'connected': False,
+            'error': 'Connection Error',
+            'message': str(e)
+        })
 
 
 if __name__ == "__main__":

@@ -4,7 +4,34 @@ A sophisticated Flask web application that uses Groq AI to analyze your mood fro
 
 ## Features
 
-### Advanced AI Mood Analysis
+### Advanced A## Spotify Account Requirements
+
+### Free vs Premium Features
+
+**✅ Works with FREE Spotify accounts:**
+- Track search and discovery
+- Creating playlists
+- Adding tracks to playlists
+- Viewing your playlists
+
+**❌ May require Spotify Premium:**
+- Some advanced API features
+- Higher rate limits
+- Certain geographic regions
+
+### Troubleshooting API Access:
+
+1. **Check your Spotify account type** at [spotify.com/account](https://spotify.com/account)
+2. **Verify app registration** in Spotify Developer Dashboard
+3. **Confirm redirect URIs** match exactly
+4. **Check geographic restrictions** (Spotify API availability varies by country)
+
+### Alternative Approach:
+
+If you encounter API restrictions, users can still:
+- Use the web search links (fallback functionality)
+- Manually search on Spotify using the generated keywords
+- The AI mood analysis still works perfectlysis
 - **Groq AI Integration**: Uses Llama 3.3 70B Versatile model for nuanced mood detection
 - **Multi-dimensional Analysis**: Detects mood, energy levels, emotions, and confidence scores
 - **Smart Keywords**: AI-generated Spotify search keywords optimized for music discovery
@@ -110,8 +137,7 @@ Visit `http://localhost:5000` in your browser!
 
 ### Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
+| `APP_BASE_URL` | Base URL for OAuth callbacks | No (defaults to http://localhost:5000) |
 | `SECRET_KEY` | Flask session secret | Yes |
 | `DATABASE_URL` | Database connection string | No (defaults to SQLite) |
 | `GROQ_API_KEY` | Groq AI API key | Yes |
@@ -129,6 +155,25 @@ DATABASE_URL=sqlite:///data.db
 ```env
 DATABASE_URL=postgresql://username:password@localhost:5432/database_name
 ```
+
+### App Base URL Configuration
+
+**Local Development:**
+```env
+APP_BASE_URL=http://localhost:5000
+```
+
+**Dev Tunnels (VS Code):**
+```env
+APP_BASE_URL=https://your-tunnel-id.devtunnels.ms
+```
+
+**Production Deployment:**
+```env
+APP_BASE_URL=https://yourdomain.com
+```
+
+This URL is used for Spotify OAuth callbacks. Make sure it matches the redirect URI registered in your Spotify app settings.
 
 ## Default Accounts
 

@@ -374,6 +374,8 @@
             </div>
             {% endif %}
 
+            <div id="spotify-status"></div>
+
             {% if analysis %}
             <div class="analysis" id="analysisDiv">
                 <button class="toggle-btn" id="toggleTable" onclick="toggleTable()">
@@ -580,6 +582,39 @@
                 closeModal();
             }
         }
+
+        // Check Spotify connection status
+        function checkSpotifyStatus() {
+            fetch('/spotify-status')
+            .then(response => response.json())
+            .then(data => {
+                const statusDiv = document.getElementById('spotify-status');
+                if (data.connected) {
+                    statusDiv.innerHTML = `
+                        <div style="color: #10b981; margin-bottom: 10px;">
+                            ✓ Connected to Spotify as ${data.display_name || data.user_id}
+                        </div>
+                    `;
+                } else {
+                    statusDiv.innerHTML = `
+                        <div style="color: #ef4444; margin-bottom: 10px;">
+                            ✗ ${data.message || data.error || 'Spotify not connected'}
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error checking Spotify status:', error);
+                document.getElementById('spotify-status').innerHTML = `
+                    <div style="color: #ef4444; margin-bottom: 10px;">
+                        ✗ Error checking Spotify connection
+                    </div>
+                `;
+            });
+        }
+
+        // Check status on page load
+        document.addEventListener('DOMContentLoaded', checkSpotifyStatus);
     </script>
 </body>
 
